@@ -70,7 +70,12 @@ model.compile(loss = "categorical_crossentropy", optimizer = "adam",
               metrics = ["accuracy"])
 
 # fit model to training set
-model.fit(X_train, y_train, epochs = 100, batch_size = 16, verbose = 1)
+
+# add early stopping rule
+callback = EarlyStopping(monitor = 'categorical_accuracy', patience = 25)
+
+history = model.fit(X_train, y_train, epochs = 100, batch_size = 16, verbose = 1,
+                    callbacks = [callback])
 
 # evaluate the model
 loss, acc = model.evaluate(X_test, y_test)

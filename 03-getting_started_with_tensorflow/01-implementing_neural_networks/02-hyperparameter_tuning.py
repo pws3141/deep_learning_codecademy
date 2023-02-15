@@ -203,9 +203,12 @@ from model import design_model, features_train, labels_train
 def do_grid_search():
   batch_size = [6, 64]
   epochs = [10, 50]
-  model = KerasRegressor(build_fn=design_model)
+  model = KerasRegressor(build_fn = design_model)
   param_grid = dict(batch_size=batch_size, epochs=epochs)
-  grid = GridSearchCV(estimator = model, param_grid=param_grid, scoring = make_scorer(mean_squared_error, greater_is_better=False),return_train_score = True)
+  grid = GridSearchCV(estimator = model, param_grid=param_grid,
+                      scoring = make_scorer(mean_squared_error,
+                                            greater_is_better=False),
+                      return_train_score = True)
   grid_result = grid.fit(features_train, labels_train, verbose = 0)
   print(grid_result)
   print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
@@ -225,8 +228,11 @@ def do_grid_search():
 #------------- RANDOMIZED SEARCH --------------
 def do_randomized_search():
   param_grid = {'batch_size': sp_randint(2, 16), 'nb_epoch': sp_randint(10, 100)}
-  model = KerasRegressor(build_fn=design_model)
-  grid = RandomizedSearchCV(estimator = model, param_distributions=param_grid, scoring = make_scorer(mean_squared_error, greater_is_better=False), n_iter = 12)
+  model = KerasRegressor(build_fn = design_model)
+  grid = RandomizedSearchCV(estimator = model, param_distributions=param_grid,
+                            scoring = make_scorer(mean_squared_error,
+                                                  greater_is_better=False),
+                            n_iter = 12)
   grid_result = grid.fit(features_train, labels_train, verbose = 0)
   print(grid_result)
   print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
